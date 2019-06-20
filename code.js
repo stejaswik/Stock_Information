@@ -110,7 +110,7 @@ function macdRsi(myStock)
 
      	//Construct API request
         req="https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=";
-        req=req.concat(myStock,"&apikey=HPXZ2S6SQX1LMF8E@&datatype=csv");
+        req=req.concat(myStock,"&apikey=<KEY>&datatype=csv");
         
         var wsreq=new XMLHttpRequest();
         //Code to retrieve API Response
