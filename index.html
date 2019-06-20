@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html>
+  <title>Stocks</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+  <!--need this stylesheet to retrieve icons in the page -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <style>html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}</style>
+  
+  <!--All the following are stylesheets and js libraries used for the code and for displaying graphs-->
+  <head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/c3/0.4.10/c3.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.16/d3.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/c3/0.4.10/c3.min.js"></script>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
+  </head>
+  
+  <!--on load the code shall retrieve information for stock BABA -->
+  <body class="w3-light-grey" onload="get_stock_info('BABA')">
+    <!-- Create Top container -->
+    <div class="w3-bar w3-top w3-black w3-large" style="z-index:4">
+      <button class="w3-bar-item w3-button w3-hover-text-light-grey" onclick="w3_open();"><i class="fa fa-bars"></i>  Menu</button>
+      <span class="w3-bar-item w3-right">Logo</span>
+    </div>
+
+    <!-- Create Sidebar/menu -->
+    <nav class="w3-sidebar w3-collapse w3-white w3-animate-left" style="display:none;z-index:3;width:300px;" id="mySidebar"><br>
+      <div class="w3-container w3-row">
+        <div class="w3-col s4">
+          <!--Retrieved the icon from the website https://icons8.com/icon/pack/users/color-->
+          <img src="https://img.icons8.com/color/45/000000/super-hero-female.png">
+        </div>
+        <!--Icons on the top left of the page for the email, linkedIn and GIT-->
+        <div class="w3-col s8 w3-bar">
+          <span>Welcome, <strong>Tejaswini</strong></span><br>
+          <a id="mailInfo" target="_top" class="w3-bar-item w3-button"><i class="fa fa-envelope"></i></a>
+          <a href="https://github.com/stejaswik" target="_blank" class="w3-bar-item w3-button"><i class="fab fa-github"></i></a>
+          <a href="https://www.linkedin.com/in/surya-tejaswini-kandavilli-0b262076/" target="_blank" class="w3-bar-item w3-button"><i class="fab fa-linkedin"></i></a>
+        </div>
+      </div>
+      <hr>
+      
+      <!--Created dashboard icon-->
+      <div class="w3-container">
+        <h5><b id="dashboardStock" class="fas fa-tachometer-alt"> Dashboard </b></h5>
+      </div>
+      <!--Created icons and page references in the navigation pane for the following options
+      Stocks, RSI, MACD, Financials, General Stats, Deductions, Additional Information-->
+      <div class="w3-bar-block">
+        <a href="#stocks" class="w3-bar-item w3-button w3-padding"><i class="fa fa-line-chart fa-fw"></i> Stocks</a>
+        <a href="#macd" class="w3-bar-item w3-button w3-padding"><i class="fas fa-poll fa-fw"></i> MACD</a>
+        <a href="#rsi" class="w3-bar-item w3-button w3-padding"><i class="fas fa-comment-dollar fa-fw"></i> RSI</a>
+        <a href="#financials" class="w3-bar-item w3-button w3-padding" id="financialDisp"><i class="fas fa-search-dollar fa-fw"></i> Financials</a>
+        <a href="#generalstats" class="w3-bar-item w3-button w3-padding"><i class="fa fa-bar-chart fa-fw"></i> General Stats</a> 
+        <a href="#deductions" class="w3-bar-item w3-button w3-padding"><i class="fa fa-bell fa-fw"></i> Deductions</a>
+        <a href="#additionalinformation" class="w3-bar-item w3-button w3-padding"><i class="fa fa-bank fa-fw"></i> Additonal Information</a>
+      </div>
+    </nav>
+
+    <!-- Overlay effect when opening sidebar on small screens -->
+    <div class="w3-overlay w3-hide-large w3-animate-opacity" onclick="w3_close()" style="cursor:pointer" title="close side menu" id="myOverlay"></div>
+
+    <!-- !PAGE CONTENT! -->
+    <div class="w3-main w3-container" style="margin-left:300px;margin-top:43px;" id="stocks">
+      <!-- Header -->
+      <header>
+        <br>
+        <h2><b id="stockName" class="fa fa-line-chart"> Stocks </b></h2>
+      </header>
+      <!--Implementing button functionality for individual stocks.-->
+      <div>
+        <input style="height:80px" class="w3-tenth w3-container w3-button w3-red w3-padding-large w3-hover-black" type="submit" id="roku" value="ROKU" onclick="get_stock_info(this.value)"></input>
+        <input style="height:80px" class="w3-tenth w3-container w3-button w3-amber w3-padding-large w3-hover-black" type="submit" id="aapl" value="AAPL" onclick="get_stock_info(this.value)"></input>
+        <input style="height:80px" class="w3-tenth w3-container w3-button w3-green w3-padding-large w3-hover-black" type="submit" id="mu" value="MU" onclick="get_stock_info(this.value)"></input>
+        <input style="height:80px" value="DBX" class="w3-tenth w3-container w3-button w3-grey w3-padding-large w3-hover-black" type="submit" id="dbx" onclick="get_stock_info(this.value)"></input>
+        <input style="height:80px"class="w3-tenth w3-container w3-button w3-orange w3-padding-large w3-hover-black" type="submit" id="bmy" value="BMY" onclick="get_stock_info(this.value)"></input>
+        <input style="height:80px" value="NFLX" class="w3-tenth w3-container w3-button w3-khaki w3-padding-large w3-hover-black" type="submit" id="nflx" onclick="get_stock_info(this.value)"></input>
+        <input style="height:80px" value="MSFT" class="w3-tenth w3-container w3-button w3-blue w3-padding-large w3-hover-black" type="submit" id="msft" onclick="get_stock_info(this.value)"></input>
+        <input style="height:80px" class="w3-tenth w3-container w3-button w3-green w3-padding-large w3-hover-black" type="submit" id="amd" value="AMD" onclick="get_stock_info(this.value)"></input>
+        <input style="height:80px" class="w3-tenth w3-container w3-button w3-amber w3-padding-large w3-hover-black" type="submit" id="nvda" value="NVDA" onclick="get_stock_info(this.value)"></input>
+        <input style="height:80px" value="AMZN" class="w3-tenth w3-container w3-button w3-grey w3-padding-large w3-hover-black" type="submit" id="amzn" onclick="get_stock_info(this.value)"></input>
+        <input style="height:80px" value="GOOG" class="w3-tenth w3-container w3-button w3-khaki w3-padding-large w3-hover-black" type="submit" id="goog" onclick="get_stock_info(this.value)"></input>
+        <input style="height:80px" class="w3-tenth w3-container w3-button w3-red w3-padding-large w3-hover-black" type="submit" id="bby" value="BBY" onclick="get_stock_info(this.value)"></input>
+      </div>
+      <!--Input from user to view stock information-->
+      <div>
+        <br/>
+        <input style="height:40px" class=" w3-border w3-padding" type="text" id="inputStock"></input>
+        <input style="height:40px" value="VIEW STOCK INFO" class="w3-button  w3-blue w3-hover-black" type="submit" id="abc" onclick="get_stock_info('VSI')"></input>
+      </div>
+      <!--Display Stock Information-->
+      <div class="w3-row-padding" style="margin:0 -16px">
+        <!--MACD Table-->
+        <div class="w3-col" id="macd">
+          <br><br>
+          <h3><b><i class="fas fa-poll"> MACD</i></b></h3>
+          <p>MACD stands for Moving Average Convergence Divergence and is used to track the momentum of the stock. MACD is the difference between exponential moving averages of the stock closing price over a long time period (26 days typically) and short period (12 days typically). The Indicator is calculated as the difference between the MACD for a given day and the exponential moving average of MACDs over the last 9 days.</p>
+          <p><b>Note: A positive MACD indicates stock price is going to rise while a negative MACD indicates stock price is going to fall.</b></p>
+          <br>
+          <table id="macdTable" class="w3-table w3-striped w3-bordered w3-border w3-hoverable w3-white">
+          </table>
+        </div>
+        <!--RSI Table-->
+        <div class="w3-col" id="rsi">
+          <br><br>
+          <h3><b><i class="fas fa-comment-dollar"> RSI</i></b></h3>
+          <p>RSI stands for Relative Strength Index. This is also a momentum indicator and computes a value (strength) of the stock. Average gain/loss is calculated using an exponential moving average of the gain/loss over a time period (typically 14 days).</p>
+          <p><b>Note: RSI is always a number between 0 and 100.</b></p>
+          <table id="rsiTable" class="w3-table w3-striped w3-bordered w3-border w3-hoverable w3-white">
+          </table>
+        </div>
+        <!--FINANCIALS Table-->
+        <div class="w3-col" id="financials">
+          <br><br>
+          <h3><b><i class="fas fa-search-dollar"> Financials</i></b></h3>
+          <p>The table below shows the financials of the company. These include Revenue, EBITDA and Income.</p>
+          <p><b>Note: TTM Stands for <i>Trailing Twelve Months</i> and EBITDA stands for <i>Earnings Before Interest, Taxes, Depreciation and Amortization.</i></b></p>
+          <!--Creating a table for the financials-->
+          <table class="w3-table w3-striped w3-bordered w3-border w3-hoverable w3-white">
+            <tr>
+              <td><i class="w3-text-blue w3-large">Revenue</i></td>
+              <td><i class="w3-text-red w3-large">EBITDA</i></td>
+              <td><i class="w3-text-blue w3-large">Income</i></td>
+            </tr>
+            <tr>
+                <td id="col10"></td>
+                <td id="col20"></td>
+                <td id="col30"></td>
+            </tr>
+            <tr>
+                <td id="col11"></td>
+                <td id="col21"></td>
+                <td id="col31"></td>
+            </tr>
+            <tr>
+                <td id="col12"></td>
+                <td id="col22"></td>
+                <td id="col32"></td>
+            </tr>
+            <tr>
+                <td id="col13"></td>
+                <td id="col23"></td>
+                <td id="col33"></td>
+            </tr>
+            <tr>
+                <td id="col14"></td>
+                <td id="col24"></td>
+                <td id="col34"></td>
+            </tr>
+            <tr>
+                <td id="col15"></td>
+                <td id="col25"></td>
+                <td id="col35"></td>
+            </tr>
+          </table>
+        </div>
+        <!--General Stats-->
+        <div class="w3-col w3-container" id="generalstats">
+          <br><br>
+          <h3><b><i class="fa fa-bar-chart"> General Stats</i></b></h3>
+          <p>Signal line data point is the exponential moving average of MACD over the previous 9 days.</p>
+          <p><b>Note: When MACD line is crossing over the signal line, the stock is set to rise.</b></p>
+          <div class="w3-twothird w3-center w3-padding">
+            <h4><b>MACD, Signal Line vs Date</b></h4>
+            <div id="chart"></div>
+          </div>
+          <div class="w3-twothird w3-center w3-padding">
+            <h4><b>Closing Value vs Date</b></h4>
+            <div id="chart2"></div>
+          </div>
+        </div>
+        <!--Deductions-->
+        <div class="w3-col" id="deductions">
+          <br><br>
+          <h3><b><i class="fa fa-bell"> Deductions</i></b></h3>
+          <p> Based on the above chart, if the MACD is above the signal line, the MACD indicator will display <i>BUY</i>. If the MACD is below the signal line, the MACD indicator will display <i>SELL</i>. If the MACD value is in the range <i>[ signal line - 0.05, signal line + 0.05 ]</i>, the MACD indicator will display <i>CLOSE TO REVERSAL</i>.</p>   
+          <p>If RSI value is above 70, the stock is <i style="color:red">overbought</i>, and if the RSI value is below 30, the stock is <i style="color:green">oversold</i>.</p>
+          <table id="deductionsTable" class="w3-table w3-striped w3-bordered w3-border w3-hoverable w3-white">
+          </table><br>
+        </div>
+      </div>
+      <!--Additional Information-->
+      <div class="w3-container w3-dark-grey w3-padding-32" style="margin-top:43px;" >
+        <div class="w3-row">
+          <div class="w3-container w3-third" id="additionalinformation">
+            <h5 class="w3-bottombar w3-border-green">Financials</h5>
+            <p>Total Revenue</p>
+            <p>Gross Profit</p>
+            <p><u>More</u></p>
+          </div>
+          <div class="w3-container w3-third">
+            <h5 class="w3-bottombar w3-border-red">MACD</h5>
+            <p>Short Time EMA</p>
+            <p>Long Time EMA</p>
+            <p>Signal Line</p>
+          </div>
+          <div class="w3-container w3-third">
+            <h5 class="w3-bottombar w3-border-orange">RSI</h5>
+            <p>Change</p>
+            <p>Average Gain</p>
+            <p>Average Loss</p>
+          </div>
+        </div>
+      </div>
+      <!-- End page content -->
+    </div>
+    <script src="./code.js"></script>
+  </body>
+</html>
