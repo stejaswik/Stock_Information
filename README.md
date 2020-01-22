@@ -25,6 +25,14 @@ Further evidence of the stock performance can be seen by visualizing the graph i
 
 ![MACD analysis for BYND-2](third.png)
 
-Conversely, the MACD 
+Conversely, the stock can be seen as falling when the indicator value is negative. A reversal occurs when the MACD line crosses the signal line as shown below:
+
+The stock of AMD has the following MACD values:
+
+![MACD analysis for AMD-1](fourth.png)
+
+![MACD analysis for AMD-2](fifth.png)
+
+
 
 
