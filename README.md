@@ -8,3 +8,5 @@ As seen above, the stocks with their symbols are represented as boxes. The pane 
 
 <b>MACD Section</b>
 
+The Moving Average Convergence Divergence (MACD) is a momentum indicator of a stock, used to visualize, using data, the stock price's momentum to rise/fall.
+
