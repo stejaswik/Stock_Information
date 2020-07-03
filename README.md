@@ -1,5 +1,9 @@
 # Stock_Information
 
+Table of Contents:
+
+[Sidebar](#sidebar)
+
 Web page to display stock profile
 On load, the following screen appears.
 
