@@ -4,7 +4,7 @@
 
 1. [Starting Up](#starting_up)
 
-2. [Navigation Pane]
+2. [Navigation Pane](#navigation_pane)
 
 3. [MACD]
 
@@ -20,7 +20,9 @@ On clicking the index.html file, the following page appears. The script is embed
 
 As seen above, the stocks with their symbols are represented as boxes. The pane can be created to monitor stocks part of the user's portfolio. On clicking the box with the corresponding stock symbol, the company MACD, RSI, Financials (if available) and deductions are displayed to the user. By default, a stock has been configured to display to the user on load. The default stock here is "BABA"
 
-#### Navigation_Pane:
+<a name="navigation_pane"/>
+
+#### Navigation Pane:
 
 The Sidebar let's the user go directly to a certain section of the web page. The first option: Stocks, brings the user to the top of the page.
 
