@@ -60,7 +60,7 @@ The relative strength index (RSI) is a momentum indicator that computes the stre
 
 ![RSI for BYND](sixth.png)
 
-<a name=""deductions>
+<a name="deductions"/>
 
 #### Deductions
 
