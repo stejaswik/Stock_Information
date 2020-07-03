@@ -1,16 +1,16 @@
-# Stock_Information
+# Stock Information
 
 ### Table of Contents:
 
-1. [Starting_Up]
+1. [Starting Up](#starting_up)
 
-2. [Navigation_Pane]
+2. [Navigation Pane]
 
 3. [MACD]
 
 4. [RSI]
 
-#### Starting_Up
+#### starting_up
 
 On clicking the index.html file, the following page appears. The script is embedded in code.js file.
 
