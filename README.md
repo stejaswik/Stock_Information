@@ -6,9 +6,11 @@
 
 2. [Navigation Pane](#navigation_pane)
 
-3. [MACD]
+3. [MACD](#macd)
 
-4. [RSI]
+4. [RSI](#rsi)
+
+5. [Deductions](#deductions)
 
 <a name="starting_up"/>
 
@@ -25,6 +27,8 @@ As seen above, the stocks with their symbols are represented as boxes. The pane 
 #### Navigation Pane:
 
 The Sidebar let's the user go directly to a certain section of the web page. The first option: Stocks, brings the user to the top of the page.
+
+<a name="macd"/>
 
 #### MACD
 
@@ -48,8 +52,18 @@ The stock of AMD has the following MACD values:
 
 ![MACD analysis for AMD-2](fifth.png)
 
+<a name="rsi"/>
+
 #### RSI
 
 The relative strength index (RSI) is a momentum indicator that computes the strength of the stock. It measures the speed and change of price movements. RSI varies from 0 to 100. Typically, a stock is considered to be in overbought position when the RSI value is above 70, while the stock is considered to be in oversold position when the RSI falls below 30.
 
 ![RSI for BYND](sixth.png)
+
+<a name=""deductions>
+
+#### Deductions
+
+The deductions section gives an overview based on the technical analysis of MACD and RSI. As per the picture below, the MACD indicator of AMD is pointing to "SELL" while the RSI is balanced at around 40-48.
+
+![Deductions for AMD](seventh.png)
