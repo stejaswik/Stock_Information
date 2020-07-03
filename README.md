@@ -1,4 +1,5 @@
 # Stock_Information
+
 Web page to display stock profile
 On load, the following screen appears.
 
@@ -10,7 +11,6 @@ As seen above, the stocks with their symbols are represented as boxes. The pane 
 
 The Sidebar let's the user go directly to a certain section of the web page. The first option: Stocks, brings the user to the top of the page.
 
-
 #### MACD Section
 
 The Moving Average Convergence Divergence (MACD) is a momentum indicator of a stock, used to visualize, using data, the stock price's momentum to rise/fall. MACD is calculated by calculating the difference between the exponential moving averages of the stock's closing price over a over a long time (typically 26 days) and short time (typically 12 days). The indicator value is the difference between the MACD value for a given date and the exponential moving average of MACD over the previous 9 days.
@@ -19,7 +19,7 @@ A positive Indicator value denotes the stock price is about to rise while the ne
 
 ![MACD analysis for BYND](second.png)
 
-In the above diagram, the stock price is clearly rising and the indicator value is going up accordingly. 
+In the above diagram, the stock price is clearly rising and the indicator value is going up accordingly.
 
 Further evidence of the stock performance can be seen by visualizing the graph in the "General Stats" section:
 
@@ -33,6 +33,6 @@ The stock of AMD has the following MACD values:
 
 ![MACD analysis for AMD-2](fifth.png)
 
+#### RSI Section
 
-
-
+The relative strength index (RSI) is a momentum indicator that computes the strength of the stock. It is calculated as the ratio between Average gain and a test
