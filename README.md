@@ -10,7 +10,7 @@
 
 4. [RSI]
 
-#### Starting Up (#starting_up)
+#### Starting Up
 
 On clicking the index.html file, the following page appears. The script is embedded in code.js file.
 
