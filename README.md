@@ -51,3 +51,5 @@ The stock of AMD has the following MACD values:
 #### RSI
 
 The relative strength index (RSI) is a momentum indicator that computes the strength of the stock. It measures the speed and change of price movements. RSI varies from 0 to 100. Typically, a stock is considered to be in overbought position when the RSI value is above 70, while the stock is considered to be in oversold position when the RSI falls below 30.
+
+![RSI for BYND](sixth.png)
