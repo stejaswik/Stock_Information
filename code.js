@@ -46,8 +46,8 @@ function get_stock_info(stock) {
   heading1.innerHTML = " Dashboard: " + myStock;
 
   //Default financials table view should be displayed to the user
-  var x = document.getElementById("financials");
-  x.style.display = "block";
+  var x = document.getElementById("financialsTable");
+  //x.style.display = "block";
 
   //Default financials view should be displayed in nav bar
   var y = document.getElementById("financialDisp");
@@ -55,7 +55,7 @@ function get_stock_info(stock) {
 
   //Retrieve MACD, RSI and Financials
   macdRsi(myStock);
-  financials(myStock);
+  // compFinancials(myStock);
 }
 
 //Computes and Displays values into MACD, RSI, Deduction Tables
@@ -75,21 +75,11 @@ function macdRsi(myStock) {
   while (Parent.hasChildNodes()) {
     Parent.removeChild(Parent.firstChild);
   }
-  //remove previous data from financials table
-  for (x = 0; x < 6; x++) {
-    var Parent = document.getElementById("col1" + x);
-    while (Parent.hasChildNodes()) {
-      Parent.removeChild(Parent.firstChild);
-    }
-    var Parent = document.getElementById("col2" + x);
-    while (Parent.hasChildNodes()) {
-      Parent.removeChild(Parent.firstChild);
-    }
-    var Parent = document.getElementById("col3" + x);
-    while (Parent.hasChildNodes()) {
-      Parent.removeChild(Parent.firstChild);
-    }
-  }
+  // //remove previous data from financials table
+  // var Parent = document.getElementById("financialsTable");
+  // while (Parent.hasChildNodes()) {
+  //   Parent.removeChild(Parent.firstChild);
+  // }
 
   var time = 12; //MACD Short Time
   var timeLng = 26; //MACD Long Time
@@ -98,7 +88,7 @@ function macdRsi(myStock) {
 
   //Construct API request
   req = "https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=";
-  req = req.concat(myStock, "&apikey=<API_KEY_HERE>");
+  req = req.concat(myStock, "&apikey=HPXZ2S6SQX1LMF8E");
 
   var wsreq = new XMLHttpRequest();
   //Code to retrieve API Response
@@ -108,8 +98,6 @@ function macdRsi(myStock) {
     //Once there is a response from the API
     if (this.readyState == 4 && this.status == 200) {
       var RspCsv = wsreq.responseText;
-      rows = RspCsv.split(/[\s]+/);
-
       //Error handling in case of an invalid stock input
       if (RspCsv.search("Error Message") >= 0) {
         alert("Please enter a valid stock ticker");
@@ -117,170 +105,44 @@ function macdRsi(myStock) {
         return;
       }
 
-      //Populate headings in first row of MACD table
-      var tableref = document.getElementById("macdTable");
-      newRow = tableref.insertRow(0);
-
-      newCell0 = newRow.insertCell(0);
-      newCell0.innerHTML = "Date".italics();
-      newCell0.className = "w3-text-blue w3-large";
-      newCell0.id = "date";
-
-      newCell0 = newRow.insertCell(1);
-      newCell0.innerHTML = "Closing Price".italics();
-      newCell0.className = "w3-text-red w3-large";
-      newCell0.id = "price";
-
-      newCell0 = newRow.insertCell(2);
-      newCell0.innerHTML = "MACD".italics();
-      newCell0.className = "w3-text-blue w3-large";
-      newCell0.id = "macdvalue";
-
-      newCell0 = newRow.insertCell(3);
-      newCell0.innerHTML = "Indicator".italics();
-      newCell0.className = "w3-text-red w3-large";
-      newCell0.id = "indicator";
-
-      // Displaying Date and closing value
-      for (i = 1; i < 6; i++) {
-        b = rows[i].split(",");
-        //MACD Table
-        newRow = tableref.insertRow(i);
-
-        newCell0 = newRow.insertCell(0);
-        disp1 = b[0];
-        newCell0.innerHTML = disp1;
-
-        newCell0 = newRow.insertCell(1);
-        disp1 = b[4];
-        newCell0.innerHTML = disp1;
-
-        newCell0 = newRow.insertCell(2);
-        rowName = "macd_" + i;
-        newCell0.id = rowName;
-
-        newCell0 = newRow.insertCell(3);
-        rowName = "indicator_" + i;
-        newCell0.id = rowName;
-      }
-
-      //Create Date MACD/RSI Indicator Header to Deductions Table
-      var tableref2 = document.getElementById("deductionsTable");
-      newRow2 = tableref2.insertRow(0);
-
-      newCell2 = newRow2.insertCell(0);
-      newCell2.innerHTML = "Date".italics();
-      newCell2.className = "w3-text-blue w3-large";
-      newCell2.id = "date";
-
-      newCell2 = newRow2.insertCell(1);
-      newCell2.innerHTML = "MACD Indicator".italics();
-      newCell2.className = "w3-text-red w3-large";
-      newCell2.id = "macdIndicator";
-
-      newCell2 = newRow2.insertCell(2);
-      newCell2.innerHTML = "RSI Value".italics();
-      newCell2.className = "w3-text-blue w3-large";
-      newCell2.id = "rsiValue";
-
-      // Displaying Date and closing value
-      for (i = 1; i < 6; i++) {
-        b = rows[i].split(",");
-
-        //Deductions Table
-        newRow2 = tableref2.insertRow(i);
-
-        newCell2 = newRow2.insertCell(0);
-        disp1 = b[0];
-        newCell2.innerHTML = disp1;
-
-        newCell2 = newRow2.insertCell(1);
-        rowName = "macdindicator_" + i;
-        newCell2.id = rowName;
-
-        newCell2 = newRow2.insertCell(2);
-        rowName = "rsivalue_" + i;
-        newCell2.id = rowName;
-      }
-
-      //Create Date and Volume Header to RSI Table
-      var tableref3 = document.getElementById("rsiTable");
-      newRow3 = tableref3.insertRow(0);
-
-      newCell3 = newRow3.insertCell(0);
-      newCell3.innerHTML = "Date".italics();
-      newCell3.className = "w3-text-blue w3-large";
-      newCell3.id = "datersi";
-
-      newCell3 = newRow3.insertCell(1);
-      newCell3.innerHTML = "Volume".italics();
-      newCell3.className = "w3-text-red w3-large";
-      newCell3.id = "volumersi";
-
-      newCell3 = newRow3.insertCell(2);
-      newCell3.innerHTML = "Average Gain".italics();
-      newCell3.className = "w3-text-blue w3-large";
-      newCell3.id = "avggainrsi";
-
-      newCell3 = newRow3.insertCell(3);
-      newCell3.innerHTML = "Average Loss".italics();
-      newCell3.className = "w3-text-red w3-large";
-      newCell3.id = "avglossrsi";
-
-      // Displaying Date and Volume value
-      for (i = 1; i < 6; i++) {
-        b = rows[i].split(",");
-
-        //Deductions Table
-        newRow3 = tableref3.insertRow(i);
-
-        newCell3 = newRow3.insertCell(0);
-        disp1 = b[0];
-        newCell3.innerHTML = disp1;
-
-        newCell3 = newRow3.insertCell(1);
-        disp1 = b[5];
-        newCell3.innerHTML = disp1;
-
-        newCell3 = newRow3.insertCell(2);
-        rowName = "avggain_" + i;
-        newCell3.id = rowName;
-
-        newCell3 = newRow3.insertCell(3);
-        rowName = "avgloss_" + i;
-        newCell3.id = rowName;
-      }
-
-      //Calculate Date and Closing value
+      //Displaying Date and closing value MACD Table
+      var obj = JSON.parse(RspCsv);
+      obj = obj["Time Series (Daily)"];
+      i = 0;
+      j = 0;
       var arrClose = [];
       var arrDate = [];
-      for (j = 1; j < rows.length; j++) {
-        b = rows[j].split(",");
-        arrClose[j] = b[4];
-        arrDate[j] = b[0];
-      }
+      var arrVolume = [];
+      numDays = Object.keys(obj).length;
+      Object.keys(obj).forEach(function (key) {
+        keys = Object.keys(obj);
+        date = keys[j];
+        closingPrice = obj[date]["4. close"];
+        volume = obj[date]["5. volume"];
+
+        arrClose[j] = closingPrice;
+        arrDate[j] = date;
+        arrVolume[j] = volume;
+        j++;
+      });
 
       //Calculate change value for RSI
       var arrChange = [];
-      for (
-        j = 1;
-        j < rows.length - 2;
-        j++ //length of Change array is 99
-      ) {
-        ChangeActual = arrClose[j] - arrClose[j + 1];
-        arrChange[j] = ChangeActual.toFixed(2);
+      for (k = 0; k < numDays - 1; k++) {
+        ChangeActual = arrClose[k] - arrClose[k + 1];
+        arrChange[k] = ChangeActual.toFixed(2);
       }
 
       //Calculate Avg Gain or Loss
-      dataptLastAvg = rows.length - 2 - timeRsi; // Should start from this value and go till "dataptLastAvg+timeRsi+1"
+      dataptLastAvg = numDays - 1 - timeRsi; // Should start from this value and go till "dataptLastAvg+timeRsi+1"
       var arrAvggain = [];
       var arrAvgloss = [];
-      for (j = dataptLastAvg; j > 0; j--) {
+      for (l = dataptLastAvg; l > 0; l--) {
         Changesumgain = 0;
         Changesumloss = 0;
 
-        if (j == dataptLastAvg) {
-          for (i = j; i < j + timeRsi; i++) {
+        if (l == dataptLastAvg) {
+          for (i = l; i < l + timeRsi; i++) {
             if (arrChange[i] >= 0) {
               Changesumgain = +Changesumgain + +arrChange[i];
             } else {
@@ -289,41 +151,41 @@ function macdRsi(myStock) {
             }
           }
           AvggainActual = Changesumgain / timeRsi;
-          arrAvggain[j] = AvggainActual.toFixed(2);
+          arrAvggain[l] = AvggainActual.toFixed(2);
           AvglossActual = Changesumloss / timeRsi;
-          arrAvgloss[j] = AvglossActual.toFixed(2);
+          arrAvgloss[l] = AvglossActual.toFixed(2);
         } else {
           weightAvgRsi = timeRsi - 1;
-          if (arrChange[j] < 0) {
-            AvggainActual = (+weightAvgRsi * arrAvggain[j + 1]) / timeRsi;
-            arrAvggain[j] = AvggainActual.toFixed(2);
+          if (arrChange[l] < 0) {
+            AvggainActual = (+weightAvgRsi * arrAvggain[l + 1]) / timeRsi;
+            arrAvggain[l] = AvggainActual.toFixed(2);
             AvglossActual =
-              (+weightAvgRsi * arrAvgloss[j + 1] + -1 * arrChange[j]) / timeRsi;
-            arrAvgloss[j] = AvglossActual.toFixed(2);
+              (+weightAvgRsi * arrAvgloss[l + 1] + -1 * arrChange[l]) / timeRsi;
+            arrAvgloss[l] = AvglossActual.toFixed(2);
           } else {
             AvggainActual =
-              (+weightAvgRsi * arrAvggain[j + 1] + +arrChange[j]) / timeRsi;
-            arrAvggain[j] = AvggainActual.toFixed(2);
-            AvglossActual = (+weightAvgRsi * arrAvgloss[j + 1]) / timeRsi;
-            arrAvgloss[j] = AvglossActual.toFixed(2);
+              (+weightAvgRsi * arrAvggain[l + 1] + +arrChange[l]) / timeRsi;
+            arrAvggain[l] = AvggainActual.toFixed(2);
+            AvglossActual = (+weightAvgRsi * arrAvgloss[l + 1]) / timeRsi;
+            arrAvgloss[l] = AvglossActual.toFixed(2);
           }
         }
       }
-
       //Calculate RSI
-      dataptLastAvg = rows.length - 2 - timeRsi;
+      dataptLastAvg = numDays - 1 - timeRsi;
       var arrRSI = [];
-      for (j = dataptLastAvg; j > 0; j--) {
-        gainlossRatio = arrAvggain[j] / arrAvgloss[j];
+      for (m = dataptLastAvg; m > 0; m--) {
+        gainlossRatio = arrAvggain[m] / arrAvgloss[m];
         RsiActual = 100 - 100 / (1 + gainlossRatio);
-        arrRSI[j] = RsiActual.toFixed(2);
+        arrRSI[m] = RsiActual.toFixed(2);
       }
 
+      //MACD Calculaiton:
       //Calculate EMA Short
       var arrEMAShrt = [];
-      dataptLast = rows.length - time - 1;
-      for (j = dataptLast; j > 0; j--) {
-        if (j == dataptLast) {
+      dataptLast = numDays - time - 1;
+      for (g = dataptLast; g > 0; g--) {
+        if (g == dataptLast) {
           var TempVal = 0;
           a = time - 1; // time=12
           for (i = dataptLast; i <= dataptLast + a; i++) {
@@ -331,20 +193,20 @@ function macdRsi(myStock) {
             TempVal = +Close + +TempVal; // Conversion to int
           }
           EMAShrtActual = TempVal / time;
-          arrEMAShrt[j] = EMAShrtActual.toFixed(2); // rounding to 2 decimal places
+          arrEMAShrt[g] = EMAShrtActual.toFixed(2); // rounding to 2 decimal places
         } else {
           weightAvg = 2 / (+time + +1);
           EMAShrtActual =
-            arrClose[j] * weightAvg + arrEMAShrt[j + 1] * (1 - weightAvg);
-          arrEMAShrt[j] = EMAShrtActual.toFixed(2);
+            arrClose[g] * weightAvg + arrEMAShrt[g + 1] * (1 - weightAvg);
+          arrEMAShrt[g] = EMAShrtActual.toFixed(2);
         }
       }
 
       //Calculate EMA Long
       var arrEMALong = [];
-      dataptLastLng = rows.length - timeLng - 1;
-      for (j = dataptLastLng; j > 0; j--) {
-        if (j == dataptLastLng) {
+      dataptLastLng = numDays - timeLng - 1;
+      for (h = dataptLastLng; h > 0; h--) {
+        if (h == dataptLastLng) {
           var TempVal = 0;
           a = timeLng - 1; // time=26
           for (i = dataptLastLng; i <= dataptLastLng + a; i++) {
@@ -352,27 +214,27 @@ function macdRsi(myStock) {
             TempVal = +Close + +TempVal; // Conversion to int
           }
           EMALongActual = TempVal / timeLng;
-          arrEMALong[j] = EMALongActual.toFixed(2); // rounding to 2 decimal places
+          arrEMALong[h] = EMALongActual.toFixed(2); // rounding to 2 decimal places
         } else {
           weightAvg = 2 / (+timeLng + +1);
           EMALongActual =
-            arrClose[j] * weightAvg + arrEMALong[j + 1] * (1 - weightAvg);
-          arrEMALong[j] = EMALongActual.toFixed(2);
+            arrClose[h] * weightAvg + arrEMALong[h + 1] * (1 - weightAvg);
+          arrEMALong[h] = EMALongActual.toFixed(2);
         }
       }
 
       //Calculate MACD
       var arrMacd = [];
-      for (j = dataptLastLng; j > 0; j--) {
-        EMAShrt = arrEMAShrt[j];
-        EMALng = arrEMALong[j];
+      for (u = dataptLastLng; u > 0; u--) {
+        EMAShrt = arrEMAShrt[u];
+        EMALng = arrEMALong[u];
         macdActual = EMAShrt - EMALng;
-        arrMacd[j] = macdActual.toFixed(2);
+        arrMacd[u] = macdActual.toFixed(2);
       }
 
       //Calculate Signal Line
-      dataptLastSigLine = rows.length - timeLng - sigLine;
-      var arrSigValue = [];
+      dataptLastSigLine = numDays - timeLng - sigLine;
+      var arrSigLine = [];
       for (j = dataptLastSigLine; j > 0; j--) {
         if (j == dataptLastSigLine) {
           var TempVal = 0;
@@ -385,69 +247,24 @@ function macdRsi(myStock) {
           }
 
           SigValueActual = TempVal / sigLine;
-          arrSigValue[j] = SigValueActual.toFixed(2);
+          arrSigLine[j] = SigValueActual.toFixed(2);
         } else {
           sigLineWeightAvg = 2 / (+sigLine + +1); //sigLine=9
           SigValueActual =
             arrMacd[j] * sigLineWeightAvg +
-            arrSigValue[j + 1] * (1 - sigLineWeightAvg);
-          arrSigValue[j] = SigValueActual.toFixed(2);
+            arrSigLine[j + 1] * (1 - sigLineWeightAvg);
+          arrSigLine[j] = SigValueActual.toFixed(2);
         }
       }
 
       //Calculate Indicator Value
       var arrIndicator = [];
       for (j = dataptLastSigLine; j > 0; j--) {
-        IndicatorValueActual = arrMacd[j] - arrSigValue[j];
+        IndicatorValueActual = arrMacd[j] - arrSigLine[j];
         arrIndicator[j] = IndicatorValueActual.toFixed(2);
       }
 
-      /* Display Macd, Indicator in MACD Table
-                   Buy/Sell in Deductions Table
-                   Display Average gain and loss for RSI Table */
-      var macIndicatorToday;
-      for (i = 1; i < 6; i++) {
-        newCell = document.getElementById("macd_" + i);
-        disp1 = arrMacd[i];
-        newCell.innerHTML = disp1;
-
-        newCell = document.getElementById("rsivalue_" + i);
-        disp1 = arrRSI[i];
-        newCell.innerHTML = disp1;
-        if (arrRSI[i] > 70) {
-          newCell.style.color = "red";
-        } else if (arrRSI[i] < 30) {
-          newCell.style.color = "green";
-        }
-
-        newCell = document.getElementById("indicator_" + i);
-        disp1 = arrIndicator[i];
-        newCell.innerHTML = disp1;
-
-        newCell = document.getElementById("macdindicator_" + i);
-        if (arrIndicator[i] > 0.05) {
-          disp1 = "BUY";
-        } else if ((-0.05 < arrIndicator[i]) & (arrIndicator[i] < 0.05)) {
-          disp1 = "CLOSE TO REVERSAL";
-        } else {
-          disp1 = "SELL";
-        }
-        newCell.innerHTML = disp1;
-
-        if (i == 1) {
-          macIndicatorToday = disp1;
-        }
-
-        newCell = document.getElementById("avggain_" + i);
-        disp1 = arrAvggain[i];
-        newCell.innerHTML = disp1;
-
-        newCell = document.getElementById("avgloss_" + i);
-        disp1 = arrAvgloss[i];
-        newCell.innerHTML = disp1;
-      }
-
-      //Display MACD/Signal Line vs Date Graph
+      //Create Graphs
       var chart = c3.generate({
         bindto: "#chart",
         data: {
@@ -474,11 +291,11 @@ function macdRsi(myStock) {
             ],
             [
               "Signal Line",
-              arrSigValue[1],
-              arrSigValue[2],
-              arrSigValue[3],
-              arrSigValue[4],
-              arrSigValue[5],
+              arrSigLine[1],
+              arrSigLine[2],
+              arrSigLine[3],
+              arrSigLine[4],
+              arrSigLine[5],
             ],
           ],
           type: "spline",
@@ -559,94 +376,184 @@ function macdRsi(myStock) {
         },
       });
 
-      //Send Stock data via mail
-      (to = "surya242459@gmail.com"),
-        (subject = "<" + myStock + "> " + arrDate[1]),
-        (body =
-          "Enter the number of shares purchased/ sold below for future reference " +
-          "%0D%0A%0D%0AMACD: " +
-          arrMacd[1] +
-          "%0D%0ARSI: " +
-          arrRSI[1] +
-          "%0D%0AMACD Indicator: " +
-          macIndicatorToday +
-          "%0D%0APurchased:" +
-          "%0D%0ASold:" +
-          "%0D%0A%0D%0ANote- If RSI > 70 : Over Bought, If RSI < 30 : Over Sold" +
-          "%0D%0A"),
-        (mailInfo = document.getElementById("mailInfo")),
-        (message = "mailto:" + to);
-      subject || body ? (message += "?") : false;
-      subject ? (message += "subject=" + subject) : false;
-      subject && body ? (message += "&body=" + body) : false;
-      !subject && body ? (message += "body=" + body) : false;
+      //Create MACD Headers
+      var tableref = document.getElementById("macdTable");
+      newRow = tableref.insertRow(0);
+      newCell0 = newRow.insertCell(0);
+      newCell0.innerHTML = "Date".italics();
+      newCell0.className = "w3-text-blue w3-large";
+      newCell0.id = "date";
 
-      mailInfo.href = message;
-    }
-  };
-}
+      newCell0 = newRow.insertCell(1);
+      newCell0.innerHTML = "Closing Price".italics();
+      newCell0.className = "w3-text-red w3-large";
+      newCell0.id = "price";
 
-//Populate financials table for selected stocks
-function financials(myStock) {
-  var comp = myStock;
-  var req =
-    "https://financialmodelingprep.com/api/financials/income-statement/";
-  req = req.concat(comp, "?datatype=json");
-  var wsreq = new XMLHttpRequest();
-  wsreq.open("GET", req, true);
-  wsreq.send();
-  wsreq.onreadystatechange = function () {
-    if (this.readyState == 4 && this.status == 200) {
-      var RspCsv = wsreq.responseText; //API Response as String
-      var obj = JSON.parse(RspCsv); //Parse API Response as JSON
+      newCell0 = newRow.insertCell(2);
+      newCell0.innerHTML = "MACD".italics();
+      newCell0.className = "w3-text-blue w3-large";
+      newCell0.id = "macdvalue";
 
-      //Loop through each key of the JSON value
-      Object.keys(obj).forEach(function (key) {
-        //alert(obj[key].Revenue);
-        if (obj[key].Revenue) {
-          var value = obj[key];
-          var j = 0;
-          //loop through each value of the json key
-          Object.getOwnPropertyNames(value.Revenue).forEach(function (
-            val,
-            idx,
-            array
-          ) {
-            var dat = val + " : " + value.Revenue[val];
-            document.getElementById("col1" + j).innerHTML = dat; //populate columns col10, col11, col12, col13, col14, and col15
-            j++;
-          });
+      newCell0 = newRow.insertCell(3);
+      newCell0.innerHTML = "Indicator".italics();
+      newCell0.className = "w3-text-red w3-large";
+      newCell0.id = "indicator";
 
-          var z = 0;
-          Object.getOwnPropertyNames(value.EBITDA).forEach(function (
-            val,
-            idx,
-            array
-          ) {
-            var dat = val + " : " + value.EBITDA[val];
-            document.getElementById("col2" + z).innerHTML = dat;
-            z++;
-          });
+      //Create RSI Headers
+      var tableref2 = document.getElementById("rsiTable");
+      newRow2 = tableref2.insertRow(0);
+      newCell2 = newRow2.insertCell(0);
+      newCell2.innerHTML = "Date".italics();
+      newCell2.className = "w3-text-blue w3-large";
+      newCell2.id = "datersi";
 
-          var f = 0;
-          Object.getOwnPropertyNames(value["Net income"]).forEach(function (
-            val,
-            idx,
-            array
-          ) {
-            var dat = val + " : " + value["Net income"][val];
-            document.getElementById("col3" + f).innerHTML = dat;
-            f++;
-          });
+      newCell2 = newRow2.insertCell(1);
+      newCell2.innerHTML = "Volume".italics();
+      newCell2.className = "w3-text-red w3-large";
+      newCell2.id = "volumersi";
+
+      newCell2 = newRow2.insertCell(2);
+      newCell2.innerHTML = "Average Gain".italics();
+      newCell2.className = "w3-text-blue w3-large";
+      newCell2.id = "avggainrsi";
+
+      newCell2 = newRow2.insertCell(3);
+      newCell2.innerHTML = "Average Loss".italics();
+      newCell2.className = "w3-text-red w3-large";
+      newCell2.id = "avglossrsi";
+
+      //Create Deductions Headers
+      var tableref3 = document.getElementById("deductionsTable");
+      newRow3 = tableref3.insertRow(0);
+      newCell3 = newRow3.insertCell(0);
+      newCell3.innerHTML = "Date".italics();
+      newCell3.className = "w3-text-blue w3-large";
+      newCell3.id = "date";
+
+      newCell3 = newRow3.insertCell(1);
+      newCell3.innerHTML = "MACD Indicator".italics();
+      newCell3.className = "w3-text-red w3-large";
+      newCell3.id = "macdIndicator";
+
+      newCell3 = newRow3.insertCell(2);
+      newCell3.innerHTML = "RSI Value".italics();
+      newCell3.className = "w3-text-blue w3-large";
+      newCell3.id = "rsiValue";
+
+      for (j = 6; j > 0; j--) {
+        //Create MACD table
+        var newRow = tableref.insertRow(1);
+        newCell0 = newRow.insertCell(0);
+        newCell0.innerHTML = arrDate[j];
+
+        newCell0 = newRow.insertCell(1);
+        newCell0.innerHTML = arrClose[j];
+
+        newCell0 = newRow.insertCell(2);
+        newCell0.innerHTML = arrMacd[j];
+
+        newCell0 = newRow.insertCell(3);
+        newCell0.innerHTML = arrIndicator[j];
+
+        //Create RSI table
+        var newRow = tableref2.insertRow(1);
+        newCell0 = newRow.insertCell(0);
+        newCell0.innerHTML = arrDate[j];
+
+        newCell0 = newRow.insertCell(1);
+        newCell0.innerHTML = arrVolume[j];
+
+        newCell0 = newRow.insertCell(2);
+        newCell0.innerHTML = arrAvggain[j];
+
+        newCell0 = newRow.insertCell(3);
+        newCell0.innerHTML = arrAvgloss[j];
+
+        //Create Deductions table
+        var newRow = tableref3.insertRow(1);
+        newCell0 = newRow.insertCell(0);
+        newCell0.innerHTML = arrDate[j];
+
+        newCell0 = newRow.insertCell(1);
+        if (arrIndicator[j] > 0.05) {
+          disp1 = "BUY";
+        } else if ((-0.05 < arrIndicator[j]) & (arrIndicator[j] < 0.05)) {
+          disp1 = "CLOSE TO REVERSAL";
         } else {
-          // If no financials response for a given stock, then hide the financials table from display
-          var x = document.getElementById("financials");
-          x.style.display = "none";
-          // if no financials response for a given stock, then hide the financials option from the nav bar
-          var y = document.getElementById("financialDisp");
-          y.style.display = "none";
+          disp1 = "SELL";
         }
-      });
+        newCell0.innerHTML = disp1;
+
+        newCell0 = newRow.insertCell(2);
+        if (arrRSI[j] > 70) {
+          newCell0.style.color = "red";
+        } else if (arrRSI[j] < 30) {
+          newCell0.style.color = "green";
+        }
+        newCell0.innerHTML = arrRSI[j + 1];
+      }
     }
   };
 }
+//Populate financials table for selected stocks
+// function compFinancials(myStock) {
+//   var comp = myStock;
+//   var req = "https://financialmodelingprep.com/api/v3/income-statement/";
+//   req = req.concat(
+//     comp,
+//     "?period=quarter&limit=400&apikey=3c5ff050c44b6fdee60b580c7bb8021a"
+//   );
+//   var wsreq = new XMLHttpRequest();
+//   wsreq.open("GET", req, true);
+//   wsreq.send();
+//   wsreq.onreadystatechange = function () {
+//     if (this.readyState == 4 && this.status == 200) {
+//       var RspCsv = wsreq.responseText; //API Response as String
+//       var obj = JSON.parse(RspCsv); //Parse API Response as JSON
+//       //Loop through each key of the JSON value
+//       var a = 0;
+//       var table = document.getElementById("financialsTable");
+//       var row = table.insertRow(0);
+//       var cell1 = row.insertCell(0);
+//       cell1.innerHTML = "Date";
+//       cell1.setAttribute("class", "w3-text-blue w3-large");
+//       var cell1 = row.insertCell(1);
+//       cell1.innerHTML = "Revenue";
+//       cell1.setAttribute("class", "w3-text-red w3-large");
+//       var cell1 = row.insertCell(2);
+//       cell1.innerHTML = "EBITDA";
+//       cell1.setAttribute("class", "w3-text-blue w3-large");
+//       var cell1 = row.insertCell(3);
+//       cell1.innerHTML = "Income";
+//       cell1.setAttribute("class", "w3-text-red w3-large");
+//       Object.keys(obj).forEach(function (key) {
+//         if (obj[key].revenue) {
+//           if (a < 8) {
+//             var row = table.insertRow(1);
+//             var value = obj[key];
+//             var cell1 = row.insertCell(0);
+//             cell1.innerHTML = obj[key].date;
+//             cell1.setAttribute("class", "w3-text-black w3-large");
+//             var cell1 = row.insertCell(1);
+//             cell1.innerHTML = obj[key].revenue;
+//             cell1.setAttribute("class", "w3-text-black w3-large");
+//             var cell1 = row.insertCell(2);
+//             cell1.innerHTML = obj[key].ebitda;
+//             cell1.setAttribute("class", "w3-text-black w3-large");
+//             var cell1 = row.insertCell(3);
+//             cell1.innerHTML = obj[key].netIncome;
+//             cell1.setAttribute("class", "w3-text-black w3-large");
+//             a++;
+//           }
+//         } else {
+//           // If no financials response for a given stock, then hide the financials table from display
+//           var x = document.getElementById("financialsTable");
+//           x.style.display = "none";
+//           // if no financials response for a given stock, then hide the financials option from the nav bar
+//           var y = document.getElementById("financialDisp");
+//           y.style.display = "none";
+//         }
+//       });
+//     }
+//   };
+// }
