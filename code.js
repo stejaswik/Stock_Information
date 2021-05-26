@@ -25,14 +25,70 @@ function w3_close() {
   overlayBg.style.display = "none";
 }
 
-//Used to retrieve stock information and On load function call it displays default stock ("BABA")
-function get_stock_info(stock) {
+function add_stock(stock) {
   var myStock;
   if (stock === "VSI") {
     // Run this for "View Stock Information"
     myStock = document.getElementById("inputStock").value; // Store Input field value to variable for further processing
   } // Run this for default stock options
   else {
+    myStock = stock;
+    document.getElementById("inputStock").value = ""; // Clear Input field when not in use
+  }
+
+  var myCookie = Cookies.get("stockList");
+  var stockList;
+  if(myCookie) {
+    stockList = Cookies.get("stockList");
+    if(!stockList.includes(myStock)) {
+      stockList += "," + myStock;
+    }
+    Cookies.set("stockList", stockList, {expires: 365});
+  }
+  else {
+    alert("ERROR");
+  }
+  location.reload();
+}
+
+function make_page() {
+  var myDiv = document.getElementById("stock_boxes");
+  var myCookie = Cookies.get("stockList");
+  var stockList;
+  if(myCookie) {
+    stockList = Cookies.get("stockList");
+  }
+  else {
+    stockList = "AAPL,SPY,AMZN,VOO,MSFT";
+    Cookies.set('stockList', stockList, {expires: 365});
+  }
+
+  var colors = ["red", "pink", "purple", "indigo", "blue", "cyan", "aqua", "teal", "green", "lime", "sand", "khaki", "yellow", "amber", "orange", "brown", "gray"];
+
+  var stockArray = stockList.split(",");
+  for(var i = 0; i < stockArray.length; i++) {
+    var iDiv = document.createElement('input');
+    iDiv.style = "height: 80px";
+    iDiv.className = '"w3-tenth w3-container w3-button w3-' + colors[Math.floor(Math.random() * colors.length)] + ' w3-padding-large w3-hover-black"';
+    iDiv.type = "submit";
+    iDiv.id = stockArray[i];
+    iDiv.value = stockArray[i];
+    iDiv.onclick = function() { get_stock_info(this.id); };
+    myDiv.appendChild(iDiv);
+    
+  }
+}
+
+//Used to retrieve stock information and On load function call it displays default stock ("BABA")
+function get_stock_info(stock) {
+  var myStock;
+  if (stock === "VSI") {
+    // Run this for "View Stock Information"
+    // alert("IN IF");
+    myStock = document.getElementById("inputStock").value; // Store Input field value to variable for further processing
+  } // Run this for default stock options
+  else {
+    // alert("IN ELSE");
     myStock = stock;
     document.getElementById("inputStock").value = ""; // Clear Input field when not in use
   }
